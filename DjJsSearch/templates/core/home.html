@@ -1,0 +1,45 @@
+{% extends './base.html' %}
+
+{% block content %}
+<h1>Seach Page</h1>
+<input type="text" id="search_here" class="form-control" placeholder="Type here anything">
+<div id="box">
+    {% for publisher in object_list %}
+    <li>{{ publisher.title }}</li>
+    {% endfor %}
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+
+    const data = '{{ js_data }}'
+    console.log(data)
+    const rdata = JSON.parse(data.replace(/&quot;/g, '"'))
+    console.log(rdata)
+
+    const input = document.getElementById('search_here')
+    console.log(input)
+
+    let filteredAry = []
+
+    input.addEventListener('keyup', (e) => {
+        box.innerHTML = ''
+        filteredAry = rdata.filter(
+            info => info['title'].includes(e.target.value)
+        )
+        console.log(filteredAry)
+
+        if (filteredAry.length > 0) {
+            filteredAry.map(info => {
+                box.innerHTML += `<br> ${info['title']}</b>`
+            })
+        } else {
+            box.innerHTML += `<br> No result found ... </b><br>`
+        }
+
+    })
+
+
+</script>
+{% endblock script %}
